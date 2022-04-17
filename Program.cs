@@ -23,6 +23,8 @@ foreach (var restaurant in restaurantInputs)
     TryClickIgnoreIfException(By.Id("onetrust-accept-btn-handler"));
 
     ScrapeReviews();
+
+    results = new List<Reviews>();
 }
 
 void ScrapeReviews()
@@ -34,7 +36,16 @@ void ScrapeReviews()
 
     TryClickIgnoreIfException(By.XPath("//span[@class='taLnk ulBlueLinks']"));
 
+
     var elements = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.XPath(".//div[@class='review-container']")));
+
+    var i = 0;
+    while (elements.Count != 15 && i <= 10)
+    {
+        elements = wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.XPath(".//div[@class='review-container']")));
+        Thread.Sleep(1000);
+        i++;
+    }
 
     foreach (var element in elements)
     {
